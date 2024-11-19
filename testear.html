@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Testear</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/doc/encuesta.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
+        type="text/css" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="index.html">Así Avanza Bogotá</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Empatizar</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="definir.html">Definir</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="idear.html">Idear</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="prototipar.html">Prototipar</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="testear.html">Testear</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Page Header-->
+    <header class="masthead" style="background-image: url('assets/img/testear.jpg')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <br><br>
+                        <h1>Fase Testear</h1>
+                        <span class="subheading">Un Blog por Andrés Ocaña y Keppler Sánchez</span>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content-->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <p> La fase de testear en el proceso de Design Thinking es crucial para evaluar la usabilidad y
+                        efectividad del prototipo desarrollado. Durante esta fase, se recopila feedback de los usuarios
+                        finales para identificar áreas de mejora y asegurar que la solución propuesta realmente
+                        satisface sus necesidades y expectativas. La retroalimentación obtenida durante esta etapa
+                        permite realizar ajustes y refinamientos antes de la implementación final del producto. En el
+                        contexto de la aplicación "Así Avanza Bogotá", se realizarán pruebas de usabilidad con un grupo
+                        representativo de ciudadanos para evaluar la funcionalidad, la interfaz de usuario y la
+                        experiencia general de la aplicación.</p>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+
+
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <h2 class="post-title">Encuesta:</h2>
+
+                    <canvas id="frequencyChart" width="400" height="200"></canvas>
+                    <canvas id="benefitChart" width="400" height="200"></canvas>
+                    <canvas id="negativeImpactChart" width="400" height="200"></canvas>
+                    <canvas id="aiUsageChart" width="400" height="200"></canvas>
+
+                    <script src="assets/doc/encuesta.js"></script>
+
+                    <script>
+                        function cargarDatosJS() {
+                            const jsonData = data.Sheet1;
+
+                            function contarRespuestas(datos, columna) {
+                                const conteo = {};
+                                datos.forEach(row => {
+                                    const respuesta = row[columna];
+                                    if (respuesta) {
+                                        conteo[respuesta] = (conteo[respuesta] || 0) + 1;
+                                    }
+                                });
+                                return conteo;
+                            }
+
+                            const facilidadUso = contarRespuestas(jsonData, "Facilidad de Uso");
+                            const interfazUsuario = contarRespuestas(jsonData, "Interfaz de Usuario");
+                            const mapaInteractivo = contarRespuestas(jsonData, "Mapa Interactivo");
+                            const experienciaGeneral = contarRespuestas(jsonData, "Experiencia General");
+
+                            function crearGraficoTorta(conteo, canvasId, titulo) {
+                                const ctx = document.getElementById(canvasId).getContext('2d');
+                                const total = Object.values(conteo).reduce((a, b) => a + b, 0);
+
+                                new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                        labels: Object.keys(conteo),
+                                        datasets: [{
+                                            label: titulo,
+                                            data: Object.values(conteo).map(val => (val / total) * 100),
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(255, 206, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgba(255, 99, 132, 1)',
+                                                'rgba(54, 162, 235, 1)',
+                                                'rgba(255, 206, 86, 1)',
+                                                'rgba(75, 192, 192, 1)',
+                                                'rgba(153, 102, 255, 1)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        plugins: {
+                                            tooltip: {
+                                                callbacks: {
+                                                    label: function (context) {
+                                                        const label = context.label || '';
+                                                        const value = context.raw;
+                                                        return `${label}: ${value.toFixed(2)}%`;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+
+                            crearGraficoTorta(facilidadUso, 'frequencyChart', 'Facilidad de Uso');
+                            crearGraficoTorta(interfazUsuario, 'benefitChart', 'Interfaz de Usuario');
+                            crearGraficoTorta(mapaInteractivo, 'negativeImpactChart', 'Mapa Interactivo');
+                            crearGraficoTorta(experienciaGeneral, 'aiUsageChart', 'Experiencia General');
+                        }
+
+                        window.onload = cargarDatosJS;
+                    </script>
+
+                    <!-- Divider-->
+                <br><br><hr class="my-4" />
+
+                    <p class="post-meta">
+                        Encuesta realiazada a
+                        <b>50 Estudiosos UMB</b>
+                        el 19 de noviembre de 2024
+                    </p>
+
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+
+
+
+
+
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <h2 class="post-title">Conclusión</h2>
+                    <p>
+                        La fase de testear ha proporcionado valiosa información sobre la usabilidad y efectividad del
+                        prototipo de la aplicación "Así Avanza Bogotá". A través de las pruebas de usabilidad y las
+                        encuestas, se han identificado tanto aspectos positivos como áreas de mejora. Los comentarios y
+                        sugerencias de los usuarios han sido fundamentales para realizar los ajustes necesarios,
+                        asegurando que la aplicación sea intuitiva, útil y confiable. La retroalimentación obtenida
+                        permitirá optimizar la aplicación antes de su lanzamiento, garantizando que cumpla con las
+                        expectativas de los ciudadanos y mejore la transparencia y la participación en la gestión de las
+                        obras públicas en Bogotá.
+                    </p>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Dising Thinking 2024</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
